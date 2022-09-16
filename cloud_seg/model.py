@@ -16,8 +16,8 @@ class DoubleConv(nn.Module):
             nn.ReLU(inplace=True),
         )
 
-        def forward(self, x):
-            return self.conv(x)
+    def forward(self, x):
+        return self.conv(x)
 
 
 class Unet(nn.Module):
@@ -25,7 +25,7 @@ class Unet(nn.Module):
         super(Unet, self).__init__()
         self.ups = nn.ModuleList()
         self.downs = nn.ModuleList()
-        self.pool = nn.MaxPool2d(kernal_size=2, stride=2)
+        self.pool = nn.MaxPool2d(kernel_size=2, stride=2)
         # make sure input image is divisible by 16
 
         for feature in features:
@@ -71,6 +71,14 @@ class Unet(nn.Module):
         return self.final_conv(x)
     
 
+def test():
+    x = torch.randn((3, 1, 160, 160))
+    model = Unet(in_channels=1, out_channels=1)
+    preds = model(x)
+    assert preds.shape == x.shape
+
+if __name__ == "__main__":
+    test()
 
 
 
