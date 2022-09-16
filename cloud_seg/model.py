@@ -1,4 +1,3 @@
-from select import KQ_FILTER_SIGNAL
 import torch 
 import torchvision.transforms.functional as TF 
 import torch.nn as nn 
@@ -15,6 +14,7 @@ class DoubleConv(nn.Module):
             nn.BatchNorm2d(out_channels),
             nn.ReLU(inplace=True),
         )
+
 
     def forward(self, x):
         return self.conv(x)
