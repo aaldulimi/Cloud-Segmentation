@@ -23,7 +23,7 @@ class Unet(nn.Module):
     def __init__(
         self, in_channels=3, out_channels=1, features=[64, 128, 256, 512],
     ):
-        super(UNIT, self).__init__()
+        super(Unet, self).__init__()
         self.ups = nn.ModuleList()
         self.downs = nn.ModuleList()
         self.pool = nn.MaxPool2d(kernal_size=2, stride=2)

@@ -2,7 +2,7 @@
 name = "cloud-segmentation"
 version = "0.1.0"
 description = ""
-authors = ["Ahmed"]
+authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
