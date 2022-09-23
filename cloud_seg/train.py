@@ -5,8 +5,13 @@ from tqdm import tqdm
 import torch.nn as nn
 import torch.optim as optim 
 from model import Unet
-
-
+from utils import (
+    load_checkpoint,
+    save_checkpoint,
+    get_loader,
+    check_accuracy,
+    save_predictions_as_imgs
+)
 
 LEARNING_RATE = 1e-4
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
@@ -18,7 +23,7 @@ IMAGE_WIDTH = 240
 PIN_MEMORY = True
 LOAD_MODEL = False
 TRAIN_IMAGE_DIR = "data/thumbnails/"
-TRAIN_MASK_DIR = "data/masked_png/"
+TRAIN_MASK_DIR = "data/masks_png/"
 
 
 def train(loader, model, optimizer, loss_fn, scaler):
@@ -67,16 +72,30 @@ def main():
     optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
 
-    train_loader = get_loaders(
+    train_loader = get_loader(
         TRAIN_IMAGE_DIR,
         TRAIN_MASK_DIR,
         BATCH_SIZE,
         train_transform,
     )
     
-    scaler = torch.cuda.amp.grad_scaler()
+    if LOAD_MODEL:
+        load_checkpoint(torch.load("my_checkpoint.pth.tar"), model)
+    scaler = torch.cuda.amp.grad_scaler.GradScaler()
+
+
     for _ in range(NUM_EPOCHS):
         train(train_loader, model, optimizer, loss_fn, scaler)
+
+        checkpoint = {
+            "state_dict": model.state_dict(),
+            "optimizer": optimizer.state_dict(),
+
+        }
+
+        save_checkpoint(checkpoint)
+
+
 
 
 if __name__ == "__main__":
