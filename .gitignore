@@ -6,6 +6,11 @@ __pycache__/
 # the model 
 my_checkpoints.pth.tar
 
+# some data
+data/val_masks
+data/val_thumbnails
+
+
 # C extensions
 *.so
 

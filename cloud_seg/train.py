@@ -8,9 +8,7 @@ from model import Unet
 from utils import (
     load_checkpoint,
     save_checkpoint,
-    get_loader,
-    check_accuracy,
-    save_predictions_as_imgs
+    get_loader
 )
 
 LEARNING_RATE = 1e-4

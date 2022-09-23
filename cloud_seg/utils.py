@@ -1,5 +1,4 @@
 import torch 
-import torchvision
 from dataset import CloudDataset
 from torch.utils.data import DataLoader
 
