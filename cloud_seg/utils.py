@@ -2,7 +2,7 @@ import torch
 from dataset import CloudDataset
 from torch.utils.data import DataLoader
 
-def save_checkpoint(state, filename="my_checkpoints.pth.tar"):
+def save_checkpoint(state, filename="CloudSegCheckpoint.pth.tar"):
     print("=> Saving checkpoint")
     torch.save(state, filename)
 

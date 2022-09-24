@@ -9,10 +9,10 @@ from PIL import Image
 import numpy as np
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-IMAGE_HEIGHT = 160
-IMAGE_WIDTH = 240
+IMAGE_HEIGHT = 512
+IMAGE_WIDTH = 512
 
-BATCH_SIZE = 16
+BATCH_SIZE = 4
 LOAD_MODEL = False
 VAL_IMAGE_DIR = "data/val_thumbnails/"
 VAL_MASK_DIR = "data/val_masks/"
@@ -30,7 +30,7 @@ transform = A.Compose(
     )
 
 
-def single_prediction(image_path, model, folder="data/saved_images/", device=DEVICE):
+def single_prediction(image_path, model, device=DEVICE):
     model.eval()
 
     pillow_image = Image.open(image_path)
@@ -46,7 +46,8 @@ def single_prediction(image_path, model, folder="data/saved_images/", device=DEV
         preds = torch.sigmoid(model(x))
         preds = (preds > 0.5).float()
 
-    torchvision.utils.save_image(preds, f"{folder}/pred_new.png")
+    output_path = image_path[:-4] + "_mask.png" 
+    torchvision.utils.save_image(preds, output_path)
 
     model.train()
     
@@ -62,7 +63,10 @@ train_loader = get_loader(
 
 if __name__ == "__main__":
     model = Unet(in_channels=3, out_channels=1).to(DEVICE)
-    load_checkpoint(torch.load("my_checkpoints.pth.tar"), model)
-    single_prediction("data/val/test_image.png", model)
+    load_checkpoint(torch.load("CloudSegCheckpoint.pth.tar", map_location="cpu"), model)
 
-    check_accuracy(train_loader, model, device=DEVICE)
+    single_prediction("data/val/1.png", model)
+    single_prediction("data/val/2.png", model)
+    single_prediction("data/val/3.png", model)
+
+    # check_accuracy(train_loader, model, device=DEVICE)

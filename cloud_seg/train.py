@@ -11,13 +11,13 @@ from utils import (
     get_loader
 )
 
-LEARNING_RATE = 1e-4
+LEARNING_RATE = 1e-5
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-BATCH_SIZE = 16
-NUM_EPOCHS = 3
+BATCH_SIZE = 2
+NUM_EPOCHS = 5
 NUM_WORKERS = 2
-IMAGE_HEIGHT = 160
-IMAGE_WIDTH = 240
+IMAGE_HEIGHT = 512
+IMAGE_WIDTH = 512
 PIN_MEMORY = True
 LOAD_MODEL = False
 TRAIN_IMAGE_DIR = "data/thumbnails/"
@@ -78,7 +78,8 @@ def main():
     )
     
     if LOAD_MODEL:
-        load_checkpoint(torch.load("my_checkpoint.pth.tar"), model)
+        load_checkpoint(torch.load("CloudSegCheckpoint.pth.tar"), model)
+        
     scaler = torch.cuda.amp.grad_scaler.GradScaler()
 
 
@@ -88,12 +89,9 @@ def main():
         checkpoint = {
             "state_dict": model.state_dict(),
             "optimizer": optimizer.state_dict(),
-
         }
 
         save_checkpoint(checkpoint)
-
-
 
 
 if __name__ == "__main__":

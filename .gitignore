@@ -3,13 +3,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# the model 
-my_checkpoints.pth.tar
+# the models 
+*.pth.tar
 
 # some data
-data/val_masks
-data/val_thumbnails
-
+data/*
 
 # C extensions
 *.so
